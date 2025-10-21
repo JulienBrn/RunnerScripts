@@ -27,13 +27,12 @@ a = Args()
 from dafn.tool_converter import fiber2events
 import pandas as pd, numpy as np
 
-check_output_paths(a.output_path, a.overwrite)
+with check_output_paths(a.output_path, a.overwrite) as output_path:
+    df = pd.read_csv(a.fiber_path)
+    final_df = fiber2events(df)
 
-df = pd.read_csv(a.fiber_path)
-final_df = fiber2events(df)
+    print(final_df)
+    print("Counts are: ")
+    print(final_df.groupby("event_name").size())
 
-print(final_df)
-print("Counts are: ")
-print(final_df.groupby("event_name").size())
-
-final_df.to_excel(a.output_path, index=False)
+    final_df.to_excel(output_path, index=False)
