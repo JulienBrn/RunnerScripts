@@ -19,16 +19,16 @@ class Args(CLI):
         description="Where you want your output excel file", 
         json_schema_extra=dict(pattern=get_file_pattern_from_suffix_list([".xlsx"]))
     )]
-    overwrite: Literal["yes", "no"] = Field(default="no", description="Whether to overwrite and continue if output exists")
+    allow_output_overwrite: bool = Field(default=False, description="If yes, erases the outputs if they exists before starting computation")
     _run_info: ClassVar = dict(cpu=0.1, gpu=0.0, memory=0.1)
     
-a = Args()
+args = Args()
 
 from dafn.tool_converter import fiber2events
 import pandas as pd, numpy as np
 
-with check_output_paths(a.output_path, a.overwrite) as output_path:
-    df = pd.read_csv(a.fiber_path)
+with check_output_paths(args.output_path, args.allow_output_overwrite) as output_path:
+    df = pd.read_csv(args.fiber_path)
     final_df = fiber2events(df)
 
     print(final_df)
