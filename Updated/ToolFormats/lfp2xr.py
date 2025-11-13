@@ -42,7 +42,7 @@ import json
 
 with check_output_paths(args.output_path, args.allow_output_overwrite) as output_path:
     lfp = json.load(args.lfp_path.open("r"))
-    all_ds = lfp2h5(lfp)
+    all_ds = lfp2xr(lfp)
     output_path.mkdir()
     for ds in all_ds:
         print(ds)

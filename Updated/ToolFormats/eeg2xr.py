@@ -29,7 +29,7 @@ from dafn.tool_converter import eeg2xr
 
 with check_output_paths(args.output_path, args.allow_output_overwrite) as output_path:
     eeg = mne.io.read_raw_bdf(args.eeg_path)
-    ds = eeg2h5(eeg)
+    ds = eeg2xr(eeg)
     ds.to_zarr(output_path)
 
 

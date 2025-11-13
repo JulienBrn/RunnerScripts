@@ -3,7 +3,7 @@ from pydantic import Field, BaseModel
 from script2runner import CLI
 from typing import List, Literal, Dict, ClassVar, Annotated
 import re
-from dafn.runner_helper import get_file_pattern_from_suffix_list, check_output_paths
+from dafn.runner_helper import get_file_pattern_from_suffix_list, check_output_paths, finalize_events
 
 class Args(CLI):
     """
@@ -26,17 +26,9 @@ args = Args()
 
 import pandas as pd
 import mne
-from dafn.tool_converter import eeg2events
+from dafn.tool_converter import mne2events
 
 with check_output_paths(args.output_path, args.allow_output_overwrite) as output_path:
     eeg_data = mne.io.read_raw_bdf(args.eeg_path)
-    df = pd.DataFrame(mne.find_events(eeg_data,initial_event=True, output="step", consecutive=True), columns=["index", "from", "to"])
-    df["t"] = eeg_data.times[df["index"]]
-
-    final_df = eeg2events(df)
-
-    print(final_df)
-    print("Counts are: ")
-    print(final_df.groupby("event_name").size())
-
-    final_df.to_excel(output_path, index=False)
+    final_df = mne2events(eeg_data)
+    finalize_events(final_df, output_path)

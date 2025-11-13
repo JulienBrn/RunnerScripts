@@ -3,7 +3,7 @@ from pydantic import Field, BaseModel
 from script2runner import CLI
 from typing import List, Literal, Dict, ClassVar, Annotated
 import re
-from dafn.runner_helper import get_file_pattern_from_suffix_list, check_output_paths
+from dafn.runner_helper import get_file_pattern_from_suffix_list, check_output_paths, finalize_events
 
 class Args(CLI):
     """
@@ -30,9 +30,4 @@ import pandas as pd, numpy as np
 with check_output_paths(args.output_path, args.allow_output_overwrite) as output_path:
     df = pd.read_csv(args.fiber_path)
     final_df = fiber2events(df)
-
-    print(final_df)
-    print("Counts are: ")
-    print(final_df.groupby("event_name").size())
-
-    final_df.to_excel(output_path, index=False)
+    finalize_events(final_df, output_path)
