@@ -37,7 +37,7 @@ class Args(CLI):
     
 args = Args()
 
-from dafn.tool_converter import lfp2h5
+from dafn.tool_converter import lfp2xr
 import json
 
 with check_output_paths(args.output_path, args.allow_output_overwrite) as output_path:

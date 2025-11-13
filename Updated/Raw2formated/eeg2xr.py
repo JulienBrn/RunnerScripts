@@ -25,7 +25,7 @@ class Args(CLI):
 args = Args()
 
 import mne
-from dafn.tool_converter import eeg2h5
+from dafn.tool_converter import eeg2xr
 
 with check_output_paths(args.output_path, args.allow_output_overwrite) as output_path:
     eeg = mne.io.read_raw_bdf(args.eeg_path)
