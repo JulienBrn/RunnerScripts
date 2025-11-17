@@ -11,7 +11,7 @@ class Args(CLI):
     """
     eeg_path: Annotated[Path, Field(
         default="/t4servershared/....bdf", 
-        description="Path to the file contining the eeg recording", 
+        description="Path to the file containing the eeg recording", 
         json_schema_extra=dict(pattern=get_file_pattern_from_suffix_list([".edf", ".bdf"]))
     )]
     output_path: Annotated[Path, Field(
