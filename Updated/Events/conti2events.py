@@ -184,8 +184,6 @@ The script **loads EEG/LFP data, preprocesses it, applies thresholding to detect
 
 args = Args()
 
-import plotly.express as px
-import plotly.graph_objects as go
 from dafn.conti2events import continuous_to_events, plot_continuous_to_events
 from dafn.runner_helper import finalize_events
 
@@ -202,54 +200,3 @@ with check_output_paths([args.output_path, args.fig_output_path], args.allow_out
     fig = plot_continuous_to_events(input, threshold, result)
     fig.write_html(fig_output_path)
     
-
-# for output_path in [a.output_path, a.fig_output_path]:
-#     if output_path is None:
-#         if output_path.exists():
-#             if a.overwrite =="yes":
-#                 shutil.rmtree(output_path)
-#             else:
-#                 raise Exception(f"Output path {output_path} already exists")
-#         output_path.parent.mkdir(exist_ok=True, parents=True)
-
-
-# display = print
-# print("Loading data, this may take a while")
-# ds = xr.Dataset()
-# input = a.input.load()
-# for preprocessing in a.preprocessing:
-#     display(input)
-#     input = preprocessing.preprocess(input)
-# display(input)
-
-
-
-# print(result.groupby("event_name").size())
-
-# if ds.sizes["t"] > 10**5:
-#     plot_ds = ds.coarsen(t=int(ds.sizes["t"] / (10**5)), boundary="trim").max()
-# else:
-#   plot_ds = ds
-
-# result.sort_values("start").to_excel(a.output_path, index=False)
-
-# fig = make_subplots(rows=plot_ds["channel"].size, cols=1, shared_xaxes=True)
-# for chan in range(plot_ds["channel"].size):
-#   chan_ds = plot_ds.isel(channel=chan)
-#   m, M = chan_ds["input"].min().item(), chan_ds["input"].max().item()
-#   fig.add_trace(go.Scatter(x=chan_ds["t"], y=chan_ds["input"], name=chan_ds["channel"].item(), opacity=0.5), row=chan+1, col=1)
-#   fig.add_hline(y=chan_ds["thresh"].item(), line_dash="dot",
-#               annotation_text=str(chan_ds["channel"].item()), 
-#               annotation_position="bottom right", row=chan+1, col=1)
-#   sub_df: pd.DataFrame = result.loc[result["event_name"] == chan_ds["channel"].item()]
-#   for _, row in sub_df.iterrows():
-#     fig.add_trace(
-#       go.Scatter(
-#           x=[row["start"], row["start"] + row["duration"], row["start"] + row["duration"], row["start"]], 
-#           y=[m, m, M, M],
-#           fill="toself",
-#           fillcolor="pink",
-#           opacity=0.5,
-#           mode="lines",
-#           line=dict(width=0), showlegend=False), row=chan+1, col=1)
-# fig.write_html(a.fig_output_path)
