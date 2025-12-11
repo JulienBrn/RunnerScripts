@@ -51,7 +51,7 @@ with check_output_paths([args.output_path, args.sorter_output_path], args.allow_
             params = yaml.safe_load(f)
     print(rec)
     print(params)
-    sorting = spikesort(rec, args.sorter_name, args.sorter_output_path, params)
+    sorting = spikesort(rec, args.sorter_name, sorter_output_path, params)
     print(sorting)
     sorting.save(format="zarr", folder=output_path)
     

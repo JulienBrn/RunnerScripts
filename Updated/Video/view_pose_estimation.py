@@ -35,7 +35,8 @@ import xarray as xr, yaml
 from dafn.video_utilities import annotate_video
 
 with check_output_paths(args.output_path, args.allow_output_overwrite) as output_path:
-    pose_estimation = xr.load(args.pose_estimation_path).compute()
+    pose_estimation = xr.open_dataarray(args.pose_estimation_path).load().compute()
+    print(pose_estimation)
     if args.skeleton_path:
         with args.skeleton_path.open("r") as f:
             skeleton = yaml.safe_load(f)

@@ -1,7 +1,7 @@
 from pathlib import Path
 from pydantic import Field, BaseModel
 from script2runner import CLI
-from typing import List, Literal, Dict, ClassVar, Annotated
+from typing import List, Literal, Dict, ClassVar, Annotated, Optional
 
 from dafn.runner_helper import get_file_pattern_from_suffix_list, check_output_paths
     
@@ -29,10 +29,10 @@ class Args(CLI):
         description="Location of the output analyzer", 
         json_schema_extra=dict(pattern=get_file_pattern_from_suffix_list([".si.zarr"]))
     )]
-    params: Annotated[None | Path, Field(
+    params: Annotated[Path | None, Field(
         default=None,
         description="Configuration for the analyzer. If None, uses default configuration.",
-        json_schema_extra=dict(pattern=get_file_pattern_from_suffix_list([".yaml"]))
+        json_schema_extra=dict(pattern=get_file_pattern_from_suffix_list([".yaml"]), nullable=True)
     )]
     params_override: Annotated[AnalyzerMainParam, Field(
         default=AnalyzerMainParam(),
@@ -60,6 +60,7 @@ with check_output_paths(args.output_path, args.allow_output_overwrite) as output
     rec : si.BaseRecording = si.load(args.recording_path)
     sorting = si.load(args.sorting_path)
     analyzer = create_spikeinterface_analyzer(rec, sorting, params, {"n_jobs": 10,"chunk_duration": "1s","progress_bar": True})
+    print(analyzer)
     analyzer.save_as(folder=output_path, format="zarr")
     
 

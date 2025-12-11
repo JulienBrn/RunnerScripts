@@ -43,6 +43,7 @@ import spikeinterface.extractors as sie
 
 with check_output_paths(args.output_path, args.allow_output_overwrite) as output_path:
     rec = sie.read_spikeglx(folder_path = args.spike_glx_file.parent, stream_name="".join(args.spike_glx_file.suffixes[:-1])[1:])
+    print(rec)
     rec, bad_channel_ids = preprocess(rec, args.slice_recording.start, args.slice_recording.end, 
                                       args.params.filter_low_freq, args.params.filter_high_freq, 100)
     print(f"Detected the following bad channel: {bad_channel_ids}")

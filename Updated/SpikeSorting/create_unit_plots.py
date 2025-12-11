@@ -39,6 +39,7 @@ with check_output_paths(args.output_path, args.allow_output_overwrite) as output
     for unit in tqdm.tqdm(analysis_data["unit"].to_numpy()[::-1]):
         try:
             html = mk_plot(analysis_data, unit)
+            output_path.mkdir(exist_ok=True)
             with (output_path / f"unit_{unit}.html").open("w") as f:
                 f.write(html) 
         except Exception as e:
