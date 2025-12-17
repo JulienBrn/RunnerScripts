@@ -47,8 +47,9 @@ args = Args()
 
 from dafn.video_utilities import get_luminosity
 
+api_key="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6ODA3MDg1MzIyOSwiaWF0IjoxNzYzNjUzMjI5LCJqdGkiOiJhYzAwZjJkNWNlMzM0M2M0YTdjODVlZTc2MjgzMTQxOSIsInVzZXJfaWQiOiIyNSJ9.hb4En4u-wECC6h_7iqpcwA0gztb0ngby6GZBTl-_qcE"
+label_studio_url = "http://l-t4-mamserver.imn.u-bordeaux2.fr/labelstudioapp"
+
 with check_output_paths([args.fig_output_path, args.output_path], args.allow_output_overwrite) as [fig_output_path, output_path]:
-
-    luminosities = get_luminosity(args.annotation_num, args.video_path, fig_output_path, args.max_n_frames)
-
+    luminosities = get_luminosity(args.annotation_num, args.video_path, fig_output_path, args.max_n_frames, label_studio_url, api_key)
     luminosities.rename(led_name="channel").to_zarr(output_path)
